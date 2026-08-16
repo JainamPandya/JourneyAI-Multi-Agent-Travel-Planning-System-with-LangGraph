@@ -5,3 +5,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+travel/
+.env
+.git/
+__pycache__/

@@ -7,16 +7,18 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-
 from backend import run_travel_agent
+
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(
-    title="JOURNEY-AI",
+    title="TripMate AI",
     description="LangGraph Multi-Agent Travel Planner with FastAPI Frontend",
     version="1.0.0"
 )
+
 
 app.mount(
     "/static",
@@ -24,13 +26,18 @@ app.mount(
     name="static"
 )
 
+
 templates = Jinja2Templates(
-    directory=str(BASE_DIR / "templates")
+    directory=str(BASE_DIR / "Templates")
 )
+
+
 
 class TravelRequest(BaseModel):
     message: str
     thread_id: str | None = None
+
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
@@ -40,8 +47,9 @@ async def home(request: Request):
         context={}
     )
 
+
 @app.post("/api/travel")
-async def travel_planner(request_data: TravelRequest):
+def travel_planner(request_data: TravelRequest):
     try:
         user_message = request_data.message.strip()
 
@@ -82,6 +90,8 @@ async def travel_planner(request_data: TravelRequest):
                 "error": str(e)
             }
         )
+
+
 
 @app.get("/health")
 async def health_check():
